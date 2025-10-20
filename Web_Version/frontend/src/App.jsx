@@ -1,15 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FileUpload from './components/FileUpload';
 import Results from './components/Results';
+import PaymentModal from './components/PaymentModal';
 import { analyzeAudio } from './services/api';
+
+// localStorage helper functions
+const getUsageData = () => {
+  try {
+    const data = localStorage.getItem('audioAnalyzerUsage');
+    if (!data) {
+      return { analysisCount: 0, skipCount: 0, hasPaid: false };
+    }
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading localStorage:', error);
+    return { analysisCount: 0, skipCount: 0, hasPaid: false };
+  }
+};
+
+const saveUsageData = (data) => {
+  try {
+    localStorage.setItem('audioAnalyzerUsage', JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving to localStorage:', error);
+  }
+};
 
 function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [pendingResults, setPendingResults] = useState(null);
+  const [usageData, setUsageData] = useState(getUsageData());
 
   const handleFileSelect = async (file) => {
     setSelectedFile(file);
@@ -19,7 +45,23 @@ function App() {
 
     try {
       const data = await analyzeAudio(file);
-      setResults(data);
+
+      // Check if we should show payment modal
+      if (usageData.analysisCount === 0 || usageData.hasPaid) {
+        // First time or user has paid - show results immediately
+        setResults(data);
+
+        // Increment usage count if first time
+        if (usageData.analysisCount === 0) {
+          const newUsageData = { ...usageData, analysisCount: 1 };
+          setUsageData(newUsageData);
+          saveUsageData(newUsageData);
+        }
+      } else {
+        // Second+ time and hasn't paid - show payment modal
+        setPendingResults(data);
+        setShowPaymentModal(true);
+      }
     } catch (err) {
       setError(
         err.response?.data?.error ||
@@ -35,6 +77,30 @@ function App() {
     setSelectedFile(null);
     setResults(null);
     setError(null);
+  };
+
+  const handlePaid = () => {
+    // User claims they've paid - mark as paid and show results
+    const newUsageData = { ...usageData, hasPaid: true };
+    setUsageData(newUsageData);
+    saveUsageData(newUsageData);
+    setResults(pendingResults);
+    setPendingResults(null);
+    setShowPaymentModal(false);
+  };
+
+  const handleSkip = () => {
+    // User skipped - increment skip count and show results
+    const newUsageData = {
+      ...usageData,
+      skipCount: usageData.skipCount + 1,
+      analysisCount: usageData.analysisCount + 1,
+    };
+    setUsageData(newUsageData);
+    saveUsageData(newUsageData);
+    setResults(pendingResults);
+    setPendingResults(null);
+    setShowPaymentModal(false);
   };
 
   return (
@@ -120,6 +186,17 @@ function App() {
       </main>
 
       <Footer />
+
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <PaymentModal
+          onClose={() => setShowPaymentModal(false)}
+          onPaid={handlePaid}
+          onSkip={handleSkip}
+          skipCount={usageData.skipCount}
+          maxSkips={3}
+        />
+      )}
     </div>
   );
 }
