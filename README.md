@@ -1,6 +1,32 @@
-# Audio Analysis Tool for ACX & ElevenLabs Compliance
+# ACX and Voice Cloning Analyser
 
-A professional command-line tool for analyzing audio files against [ACX audiobook standards](https://www.acx.com/help/acx-audio-submission-requirements/201456300) and [ElevenLabs voice cloning guidelines](https://elevenlabs.io/). Perfect for audiobook narrators, voice actors, and audio engineers who need to validate their recordings before submission.
+Professional audio analysis for ACX audiobook standards and ElevenLabs voice cloning - available as both a **web application** and **command-line tool**.
+
+🌐 **[Try the Web App](https://calibration-metrics.vercel.app)** - No installation required!
+
+---
+
+## Two Versions Available
+
+### 🌐 Web Application (Recommended for Quick Analysis)
+**Live at:** https://calibration-metrics.vercel.app
+
+- ✅ No installation - works in any browser
+- ✅ Drag-and-drop file upload
+- ✅ Enhanced ElevenLabs voice cloning suitability scoring (5 criteria)
+- ✅ Dynamic range analysis
+- ✅ Real-time progress tracking
+- ✅ Mobile-friendly
+- ✅ Privacy first - files processed in memory and deleted immediately
+
+### 💻 Command-Line Tool (For Automation & Batch Processing)
+- ✅ Batch processing of multiple files
+- ✅ Stream Deck integration (one-button operation)
+- ✅ Text report export
+- ✅ Progress bars for long files
+- ✅ Automation-friendly
+
+---
 
 ## Features
 
@@ -12,25 +38,56 @@ A professional command-line tool for analyzing audio files against [ACX audioboo
 - Duration limits (< 120 minutes)
 - Room tone detection (1-5 seconds silence)
 
-✅ **ElevenLabs Voice Cloning Guidelines**
-- Minimum duration validation (1 minute minimum, 30+ minutes recommended)
-- Audio quality assessment
-- Background noise analysis
+✅ **ElevenLabs Voice Cloning Guidelines** *(Enhanced in Web Version)*
+- Volume/loudness requirements (RMS -23 to -18 dB, True Peak -3 dB)
+- Format suitability assessment
+- Audio quality checklist (clean audio, no reverb, consistent volume)
+- Duration-based cloning type recommendations (Instant 1-2 min, Professional 30+ min)
+- Overall suitability scoring (Excellent/Good/Acceptable/Poor/Unsuitable)
+- Direct links to official ElevenLabs documentation
 
 ✅ **Additional Professional Metrics**
 - LUFS (Loudness Units Full Scale) measurement
 - True Peak detection
+- Dynamic Range analysis *(new in web version)*
 - Reverb/echo level estimation
-- Batch processing with summary statistics
+- Batch processing with summary statistics *(CLI only)*
 
 ✅ **User Experience**
-- Color-coded terminal output
-- Progress bars for long audio files (>60 seconds)
-- Detailed text report export
-- Stream Deck integration (one-button operation)
-- Batch folder analysis
+- Color-coded terminal output (CLI) / Visual indicators (Web)
+- Progress bars for long audio files
+- Detailed text report export (CLI)
+- Stream Deck integration (CLI)
+- Drag-and-drop upload (Web)
 
-## Installation
+---
+
+## Repository Structure
+
+```
+CalibrationMetrics/
+├── audio_analyzer.py      # CLI tool
+├── run_analyzer.command   # Stream Deck integration script
+├── requirements.txt       # CLI dependencies
+├── audio_files/          # Place audio files here for CLI
+├── Web_Version/          # Full-stack web application
+│   ├── backend/          # FastAPI backend (Python)
+│   │   ├── app/
+│   │   │   ├── main.py
+│   │   │   ├── core/analyzer.py
+│   │   │   └── models/schemas.py
+│   │   └── requirements.txt
+│   └── frontend/         # React frontend (Vite + Tailwind)
+│       ├── src/
+│       │   ├── App.jsx
+│       │   └── components/
+│       └── package.json
+└── README.md
+```
+
+---
+
+## CLI Tool - Installation & Usage
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -52,8 +109,8 @@ choco install ffmpeg
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/fr4nky8oy/CalibrationMetrics.git
-cd CalibrationMetrics
+git clone https://github.com/fr4nky8oy/Calibration_Metrics.git
+cd Calibration_Metrics
 ```
 
 2. Create a virtual environment:
@@ -71,8 +128,6 @@ pip install -r requirements.txt
 ```bash
 mkdir audio_files
 ```
-
-## Usage
 
 ### Prepare Your Audio Files
 
@@ -192,9 +247,42 @@ This integration also works with:
 - **BetterTouchTool** - Custom gestures and shortcuts
 - Any tool that can execute shell scripts
 
+---
+
+## Web Application - Local Development
+
+If you want to run the web version locally:
+
+### Backend Setup
+```bash
+cd Web_Version/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Frontend Setup (New Terminal)
+```bash
+cd Web_Version/frontend
+npm install
+npm run dev
+```
+
+Visit `http://localhost:5173` for frontend and `http://localhost:8000/docs` for API documentation.
+
+### Deployment
+
+The web application is deployed on:
+- **Frontend**: Vercel (https://calibration-metrics.vercel.app)
+- **Backend API**: Railway (https://calibrationmetrics-production.up.railway.app)
+- **API Docs**: https://calibrationmetrics-production.up.railway.app/docs
+
+---
+
 ## Output Format
 
-### Terminal Output
+### CLI Terminal Output
 Color-coded results showing:
 - ✅ **Green** = Pass
 - ❌ **Red** = Fail
@@ -204,13 +292,22 @@ Color-coded results showing:
 - ElevenLabs compliance
 - Summary statistics
 
-### Text Report
+### CLI Text Report
 Detailed report including:
 - Complete file analysis for each audio file
 - Pass/fail status for all requirements
 - Specific measurements with tolerances
 - Overall compliance summary
 - Timestamped filename (when using Stream Deck)
+
+### Web Application Output
+- Visual color-coded pass/fail indicators
+- Comprehensive ElevenLabs suitability breakdown
+- Dynamic range visualization
+- Cloning type recommendations with documentation links
+- Mobile-responsive results display
+
+---
 
 ## Libraries Used
 
@@ -225,14 +322,21 @@ Detailed report including:
 ### Format Detection
 - **[FFmpeg](https://ffmpeg.org/)** - External tool for format and codec detection (via subprocess)
 
+### Web Application (Additional)
+- **Frontend**: React 18, Vite, Tailwind CSS
+- **Backend**: FastAPI, Uvicorn
+- **Deployment**: Vercel (frontend), Railway (backend)
+
 ### User Interface
-- **[tqdm](https://github.com/tqdm/tqdm)** (4.66.1) - Progress bars for long file analysis
+- **[tqdm](https://github.com/tqdm/tqdm)** (4.66.1) - Progress bars for long file analysis (CLI)
 
 ### Python Standard Library
 - `argparse` - Command-line argument parsing
 - `json` - FFmpeg output parsing
 - `pathlib` - Cross-platform file path handling
 - `subprocess` - FFmpeg integration
+
+---
 
 ## ACX Standards Reference
 
@@ -250,11 +354,15 @@ Detailed report including:
 
 | Requirement | Guideline | Tool Validates |
 |------------|-----------|----------------|
+| Volume/Loudness | RMS -23 to -18 dB, True Peak -3 dB | ✅ *(Web)* |
+| Format | MP3 192+ kbps recommended | ✅ *(Web)* |
+| Audio Quality | Clean, no reverb, consistent | ✅ *(Web)* |
 | Minimum Length | 1 minute (30+ recommended) | ✅ |
-| Audio Quality | Clean, minimal background noise | ✅ |
 | Noise Floor | < -50 dB (recommended) | ✅ |
 
-## Example Output
+---
+
+## Example Output (CLI)
 
 ```
 Scanning for audio files...
@@ -298,6 +406,8 @@ Pass Rate: 66.7%
 ============================================================
 ```
 
+---
+
 ## Troubleshooting
 
 **Error: "FFmpeg not found"**
@@ -315,6 +425,8 @@ Pass Rate: 66.7%
 **Virtual environment activation fails**
 - Make sure you created it with `python3 -m venv venv`
 - On Windows, use `venv\Scripts\activate` instead of `source venv/bin/activate`
+
+---
 
 ## Common Audio Issues & Fixes
 
@@ -340,6 +452,8 @@ Pass Rate: 66.7%
 - Use noise reduction tools (carefully - don't over-process)
 - Check for electrical interference
 
+---
+
 ## Contributing
 
 Contributions welcome! Please:
@@ -354,7 +468,9 @@ MIT License - see LICENSE file for details
 
 ## Author
 
-**Franky Redente** - [GitHub](https://github.com/fr4nky8oy)
+**Franky Redente**
+- Website: [frankyredente.com](https://www.frankyredente.com/)
+- GitHub: [github.com/fr4nky8oy](https://github.com/fr4nky8oy)
 
 ## Acknowledgments
 
@@ -362,10 +478,23 @@ MIT License - see LICENSE file for details
 - ElevenLabs for voice cloning guidelines
 - Audio engineering community for best practices
 
+---
+
 ## Version History
 
+**v2.0.0** (October 2025)
+- 🌐 **Web application released** - Full-stack React + FastAPI app
+- Enhanced ElevenLabs analysis with 5-criteria suitability scoring
+- Dynamic range measurement
+- Cloning type recommendations (Instant vs. Professional)
+- Overall suitability rating system
+- Real-time progress tracking in web UI
+- Mobile-responsive design
+- Deployed on Vercel (frontend) + Railway (backend)
+- Direct links to ElevenLabs documentation
+
 **v1.0.0** (October 2025)
-- Initial release
+- Initial CLI tool release
 - ACX compliance checking
 - ElevenLabs guidelines validation
 - Progress bars for long files
@@ -373,9 +502,11 @@ MIT License - see LICENSE file for details
 - Stream Deck integration
 - Batch processing with summary statistics
 
+---
+
 ## Support
 
-For issues, questions, or feature requests, please [open an issue](https://github.com/fr4nky8oy/CalibrationMetrics/issues).
+For issues, questions, or feature requests, please [open an issue](https://github.com/fr4nky8oy/Calibration_Metrics/issues).
 
 ---
 
