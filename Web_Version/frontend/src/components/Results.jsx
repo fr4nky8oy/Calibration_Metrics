@@ -3,6 +3,12 @@ const Results = ({ results }) => {
 
   const { file_info, acx_compliance, additional_metrics, elevenlabs } = results;
 
+  // Check if we have the new ElevenLabs structure (with 'overall' property)
+  const hasNewElevenLabsFormat = elevenlabs && elevenlabs.overall;
+
+  // Check if we have dynamic_range in additional_metrics
+  const hasDynamicRange = additional_metrics && additional_metrics.dynamic_range !== undefined;
+
   const CheckIcon = () => (
     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -125,7 +131,7 @@ const Results = ({ results }) => {
       {/* Additional Metrics */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Additional Metrics</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className={`grid ${hasDynamicRange ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-3'} gap-4`}>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <p className="text-gray-500 text-sm mb-1">LUFS</p>
             <p className="text-2xl font-bold text-gray-900">{additional_metrics.lufs.toFixed(1)}</p>
@@ -138,17 +144,23 @@ const Results = ({ results }) => {
             <p className="text-gray-500 text-sm mb-1">Reverb</p>
             <p className="text-2xl font-bold text-gray-900 capitalize">{additional_metrics.reverb_level}</p>
           </div>
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <p className="text-gray-500 text-sm mb-1">Dynamic Range</p>
-            <p className="text-2xl font-bold text-gray-900">{additional_metrics.dynamic_range.toFixed(1)} dB</p>
-          </div>
+          {hasDynamicRange && (
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-gray-500 text-sm mb-1">Dynamic Range</p>
+              <p className="text-2xl font-bold text-gray-900">{additional_metrics.dynamic_range.toFixed(1)} dB</p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* ElevenLabs Voice Cloning Suitability */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">ElevenLabs Voice Cloning Suitability</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          {hasNewElevenLabsFormat ? 'ElevenLabs Voice Cloning Suitability' : 'ElevenLabs Compliance'}
+        </h2>
 
+        {hasNewElevenLabsFormat ? (
+          <>
         {/* Overall Suitability Badge */}
         <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200">
           <div className="flex items-center justify-between">
@@ -300,6 +312,24 @@ const Results = ({ results }) => {
             </a>
           </div>
         </div>
+        </>
+        ) : (
+          /* Old Format - Fallback */
+          <div className="space-y-1">
+            <ResultRow
+              label="Length"
+              value={`${elevenlabs.length_minutes?.toFixed(1) || 'N/A'} min`}
+              pass={elevenlabs.length_ok || false}
+              requirement={elevenlabs.length_requirement || 'Minimum 1 minute'}
+            />
+            <ResultRow
+              label="Quality"
+              value={elevenlabs.quality_ok ? 'Good' : 'Poor'}
+              pass={elevenlabs.quality_ok || false}
+              requirement={elevenlabs.quality_requirement || 'Clean audio required'}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
