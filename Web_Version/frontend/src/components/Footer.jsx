@@ -13,31 +13,24 @@ const Footer = () => {
           </div>
           <div className="flex items-center space-x-6 text-sm text-gray-600">
             <a
-              href="https://github.com"
+              href="https://github.com/fr4nky8oy/Calibration_Metrics"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-900 transition-colors"
             >
               GitHub
             </a>
-            <span className="text-gray-400">|</span>
-            <a
-              href="#"
-              className="hover:text-gray-900 transition-colors"
-            >
-              About
-            </a>
-            <span className="text-gray-400">|</span>
-            <a
-              href="#"
-              className="hover:text-gray-900 transition-colors"
-            >
-              API Docs
-            </a>
           </div>
         </div>
         <div className="mt-4 text-center text-xs text-gray-400">
-          Made by Franky Redente via Claude Code
+          Made by <a
+            href="https://www.frankyredente.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-600 transition-colors"
+          >
+            Franky Redente
+          </a> via Claude Code
         </div>
       </div>
     </footer>

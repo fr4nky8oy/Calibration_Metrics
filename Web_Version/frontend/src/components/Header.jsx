@@ -5,7 +5,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              ACX Audio Analyzer
+              ACX and Voice Cloning Analyser
             </h1>
             <p className="mt-1 text-sm text-gray-600">
               Professional audio analysis for ACX audiobook standards & ElevenLabs voice cloning
