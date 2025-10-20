@@ -37,7 +37,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-4 text-center text-xs text-gray-400">
-          Made with Claude Code
+          Made by Franky Redente via Claude Code
         </div>
       </div>
     </footer>
