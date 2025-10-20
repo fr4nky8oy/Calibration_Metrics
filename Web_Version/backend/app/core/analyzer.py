@@ -194,6 +194,35 @@ def estimate_reverb_level(file_path: Path) -> str:
         return "unknown"
 
 
+def calculate_dynamic_range(file_path: Path) -> float:
+    """
+    Calculate dynamic range of audio (difference between loudest and quietest parts)
+
+    Returns:
+        Dynamic range in dB
+    """
+    try:
+        audio, sr = librosa.load(str(file_path), sr=None, mono=True)
+
+        # Calculate RMS in 1-second windows
+        window_size = sr  # 1 second
+        rms_values = []
+
+        for i in range(0, len(audio) - window_size, window_size // 2):
+            window = audio[i:i+window_size]
+            rms = np.sqrt(np.mean(window**2))
+            if rms > 1e-10:  # Ignore near-silence
+                rms_values.append(20 * np.log10(rms))
+
+        if len(rms_values) > 0:
+            dynamic_range = max(rms_values) - min(rms_values)
+            return float(dynamic_range)
+
+        return 0.0
+    except Exception as e:
+        return 0.0
+
+
 def check_acx_compliance(analysis: Dict) -> Dict:
     """
     Check if audio meets ACX standards
@@ -264,25 +293,144 @@ def check_acx_compliance(analysis: Dict) -> Dict:
 
 def check_elevenlabs_compliance(analysis: Dict) -> Dict:
     """
-    Check if audio meets ElevenLabs guidelines
+    Check if audio meets ElevenLabs guidelines for voice cloning
+
+    Covers both Instant Voice Cloning and Professional Voice Cloning requirements
+    Documentation links:
+    - Instant: https://elevenlabs.io/docs/product-guides/voices/voice-cloning/instant-voice-cloning
+    - Professional: https://elevenlabs.io/docs/product-guides/voices/voice-cloning/professional-voice-cloning
 
     Returns:
-        Dictionary with pass/fail for voice cloning requirements
+        Dictionary with detailed voice cloning suitability information
     """
     results = {}
 
-    # Sufficient length (minimum ~1 minute, recommended 30+ minutes)
     duration_seconds = analysis['duration']
     duration_minutes = duration_seconds / 60
-    length_pass = duration_minutes >= 1
-    results['length_ok'] = length_pass
-    results['length_minutes'] = float(duration_minutes)
-    results['length_requirement'] = 'Minimum 1 minute (30+ recommended)'
+    rms = analysis['rms_db']
+    true_peak = analysis['true_peak']
+    noise = analysis['noise_floor_db']
+    reverb = analysis['reverb_level']
+    dynamic_range = analysis.get('dynamic_range', 0)
 
-    # Quality check (clean audio)
-    noise_acceptable = analysis['noise_floor_db'] < -50
-    results['quality_ok'] = noise_acceptable
-    results['quality_requirement'] = 'Clean audio with minimal background noise'
+    # 1. Volume/Loudness Requirements
+    volume_ok = -23 <= rms <= -18 and true_peak <= -3
+    results['volume'] = {
+        'rms': rms,
+        'true_peak': true_peak,
+        'pass': volume_ok,
+        'ideal_range': '-23 to -18 dB RMS, -3 dB true peak',
+        'message': 'Volume is optimal for voice cloning' if volume_ok else 'Adjust volume to -23 to -18 dB RMS range'
+    }
+
+    # 2. Format Suitability
+    codec = analysis['codec'].lower()
+    bitrate = analysis['bitrate']
+    format_ok = codec == 'mp3' and bitrate >= 192
+    results['format'] = {
+        'current': f"{analysis['codec'].upper()} at {bitrate} kbps",
+        'pass': format_ok,
+        'recommended': 'MP3 at 192+ kbps',
+        'message': 'Format is suitable' if format_ok else 'Convert to MP3 192+ kbps for best results'
+    }
+
+    # 3. Audio Quality Checklist
+    clean_audio = noise < -50
+    low_reverb = reverb in ['low', 'unknown']
+    consistent_volume = dynamic_range < 15  # Less than 15dB variation
+
+    results['quality_checklist'] = {
+        'clean_audio': {
+            'pass': clean_audio,
+            'value': f"{noise:.1f} dB",
+            'message': 'Clean audio with low noise floor' if clean_audio else 'Background noise detected'
+        },
+        'no_reverb': {
+            'pass': low_reverb,
+            'value': reverb,
+            'message': 'Minimal reverb/echo' if low_reverb else 'Reverb/echo detected - may affect clone quality'
+        },
+        'consistent_volume': {
+            'pass': consistent_volume,
+            'value': f"{dynamic_range:.1f} dB",
+            'message': 'Consistent volume levels' if consistent_volume else 'High dynamic range - may yield unpredictable results'
+        }
+    }
+
+    # 4. Duration-based cloning type recommendation
+    if duration_minutes < 1:
+        cloning_type = 'none'
+        recommendation = 'Too short for voice cloning. Need minimum 1 minute.'
+    elif duration_minutes <= 2:
+        cloning_type = 'instant'
+        recommendation = 'Ideal for Instant Voice Cloning (1-2 minutes is the sweet spot)'
+    elif duration_minutes <= 3:
+        cloning_type = 'instant'
+        recommendation = 'Good for Instant Voice Cloning (longer may not improve quality)'
+    elif duration_minutes < 30:
+        cloning_type = 'neither'
+        recommendation = 'Too long for Instant, too short for Professional. Use first 2 minutes for Instant or record more for Professional (30+ minutes recommended)'
+    elif duration_minutes < 180:
+        cloning_type = 'professional'
+        recommendation = f'Suitable for Professional Voice Cloning ({duration_minutes:.1f} minutes)'
+    else:
+        cloning_type = 'professional'
+        recommendation = f'Optimal for Professional Voice Cloning ({duration_minutes:.1f} minutes - excellent sample size)'
+
+    results['cloning_type'] = {
+        'recommended': cloning_type,
+        'duration_minutes': float(duration_minutes),
+        'message': recommendation
+    }
+
+    # 5. Overall Suitability Score
+    criteria_met = 0
+    total_criteria = 5
+
+    if volume_ok:
+        criteria_met += 1
+    if format_ok:
+        criteria_met += 1
+    if clean_audio:
+        criteria_met += 1
+    if low_reverb:
+        criteria_met += 1
+    if consistent_volume:
+        criteria_met += 1
+
+    # Determine overall suitability
+    if duration_minutes < 1:
+        suitability = 'unsuitable'
+        suitability_message = 'Not suitable for voice cloning - file too short'
+    elif criteria_met >= 4:
+        if cloning_type == 'instant':
+            suitability = 'excellent'
+            suitability_message = f'Excellent for Instant Voice Cloning ({criteria_met}/{total_criteria} criteria met)'
+        elif cloning_type == 'professional':
+            suitability = 'excellent'
+            suitability_message = f'Excellent for Professional Voice Cloning ({criteria_met}/{total_criteria} criteria met)'
+        else:
+            suitability = 'good'
+            suitability_message = f'Good audio quality ({criteria_met}/{total_criteria} criteria met) - adjust duration for optimal results'
+    elif criteria_met >= 3:
+        suitability = 'acceptable'
+        suitability_message = f'Acceptable for voice cloning ({criteria_met}/{total_criteria} criteria met) - some improvements recommended'
+    else:
+        suitability = 'poor'
+        suitability_message = f'Poor suitability ({criteria_met}/{total_criteria} criteria met) - significant improvements needed'
+
+    results['overall'] = {
+        'suitability': suitability,
+        'criteria_met': criteria_met,
+        'total_criteria': total_criteria,
+        'message': suitability_message
+    }
+
+    # Documentation links
+    results['documentation'] = {
+        'instant_voice_cloning': 'https://elevenlabs.io/docs/product-guides/voices/voice-cloning/instant-voice-cloning',
+        'professional_voice_cloning': 'https://elevenlabs.io/docs/product-guides/voices/voice-cloning/professional-voice-cloning'
+    }
 
     return results
 
@@ -325,6 +473,9 @@ def analyze_audio_file(file_path: Path, original_filename: str = None) -> Dict:
     # Reverb estimation
     reverb = estimate_reverb_level(file_path)
 
+    # Dynamic range calculation
+    dynamic_range = calculate_dynamic_range(file_path)
+
     # Combine all analysis
     analysis = {
         **ffmpeg_info,
@@ -332,7 +483,8 @@ def analyze_audio_file(file_path: Path, original_filename: str = None) -> Dict:
         'room_tone': room_tone,
         'lufs': lufs,
         'true_peak': true_peak,
-        'reverb_level': reverb
+        'reverb_level': reverb,
+        'dynamic_range': dynamic_range
     }
 
     # Check compliance
@@ -355,7 +507,8 @@ def analyze_audio_file(file_path: Path, original_filename: str = None) -> Dict:
         'additional_metrics': {
             'lufs': analysis['lufs'],
             'true_peak': analysis['true_peak'],
-            'reverb_level': analysis['reverb_level']
+            'reverb_level': analysis['reverb_level'],
+            'dynamic_range': analysis['dynamic_range']
         },
         'elevenlabs': el_results
     }

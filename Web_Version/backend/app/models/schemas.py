@@ -77,15 +77,17 @@ class AdditionalMetrics(BaseModel):
     lufs: float
     true_peak: float
     reverb_level: str
+    dynamic_range: float
 
 
 class ElevenLabsCompliance(BaseModel):
-    """ElevenLabs compliance results"""
-    length_ok: bool
-    quality_ok: bool
-    length_minutes: Optional[float] = None
-    length_requirement: Optional[str] = None
-    quality_requirement: Optional[str] = None
+    """ElevenLabs compliance results - enhanced with detailed voice cloning suitability"""
+    volume: Dict[str, Any]
+    format: Dict[str, Any]
+    quality_checklist: Dict[str, Any]
+    cloning_type: Dict[str, Any]
+    overall: Dict[str, Any]
+    documentation: Dict[str, str]
 
 
 class AnalysisResponse(BaseModel):
