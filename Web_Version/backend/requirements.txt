@@ -1,0 +1,17 @@
+# FastAPI and server
+fastapi==0.115.0
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20
+
+# Audio processing (from existing audio_analyzer.py)
+librosa==0.10.1
+soundfile==0.12.1
+pyloudnorm==0.1.1
+numpy==1.26.4
+
+# Additional utilities
+pydantic==2.10.5
+pydantic-settings==2.7.1
+
+# CORS support
+python-dotenv==1.0.1
