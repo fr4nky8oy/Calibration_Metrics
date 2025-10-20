@@ -238,47 +238,6 @@ The `run_analyzer.command` script automatically:
 - This is normal if no audio files are found
 - Add audio files to `audio_files/` folder and try again
 
-#### Alternative Automation Tools
-
-This integration also works with:
-- **Soundflow** - Audio production automation
-- **Alfred** (macOS) - Productivity launcher
-- **Keyboard Maestro** (macOS) - Macro automation
-- **BetterTouchTool** - Custom gestures and shortcuts
-- Any tool that can execute shell scripts
-
----
-
-## Web Application - Local Development
-
-If you want to run the web version locally:
-
-### Backend Setup
-```bash
-cd Web_Version/backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-
-### Frontend Setup (New Terminal)
-```bash
-cd Web_Version/frontend
-npm install
-npm run dev
-```
-
-Visit `http://localhost:5173` for frontend and `http://localhost:8000/docs` for API documentation.
-
-### Deployment
-
-The web application is deployed on:
-- **Frontend**: Vercel (https://calibration-metrics.vercel.app)
-- **Backend API**: Railway (https://calibrationmetrics-production.up.railway.app)
-- **API Docs**: https://calibrationmetrics-production.up.railway.app/docs
-
----
 
 ## Output Format
 
@@ -454,21 +413,13 @@ Pass Rate: 66.7%
 
 ---
 
-## Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
 ## License
 
 MIT License - see LICENSE file for details
 
-## Author
+## Credits
 
-**Franky Redente**
+** Created by Franky Redente via Claude Code**
 - Website: [frankyredente.com](https://www.frankyredente.com/)
 - GitHub: [github.com/fr4nky8oy](https://github.com/fr4nky8oy)
 
