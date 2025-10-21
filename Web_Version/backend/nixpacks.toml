@@ -1,5 +1,5 @@
 [phases.setup]
-aptPkgs = ["python3", "python3-pip", "python3-venv", "ffmpeg"]
+aptPkgs = ["ffmpeg"]
 
 [phases.install]
 cmds = [
@@ -7,9 +7,6 @@ cmds = [
   "/opt/venv/bin/pip install --upgrade pip",
   "/opt/venv/bin/pip install -r requirements.txt"
 ]
-
-[phases.build]
-cmds = ["echo 'Build phase complete'"]
 
 [start]
 cmd = "/opt/venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
