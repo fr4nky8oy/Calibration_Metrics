@@ -23,8 +23,7 @@ const PaymentModal = ({ onClose, onPaid, onSkip, skipCount = 0, maxSkips = 3 }) 
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-lg">
           <h2 className="text-2xl font-bold mb-2">Support This Free Tool</h2>
           <p className="text-blue-50 text-sm">
-            Thanks for using the ACX Audio Analyzer! This tool is free and open-source,
-            but server costs add up. If you find it valuable, consider supporting development with a small tip.
+            Thanks for using the Analyzer! This tool is free but server costs add up. If you find it valuable, consider supporting development with a small tip.
           </p>
         </div>
 
