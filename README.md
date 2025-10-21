@@ -2,14 +2,15 @@
 
 Professional audio analysis for ACX audiobook standards and ElevenLabs voice cloning - available as both a **web application** and **command-line tool**.
 
-🌐 **[Try the Web App](https://calibration-metrics.vercel.app)** - No installation required!
+🌐 **[Try the Web App](https://analisethis.frankyredente.com)** - No installation required!
 
 ---
 
 ## Two Versions Available
 
 ### 🌐 Web Application (Recommended for Quick Analysis)
-**Live at:** https://calibration-metrics.vercel.app
+**Live at:** https://analisethis.frankyredente.com
+**Also available at:** https://calibration-metrics.vercel.app
 
 - ✅ No installation - works in any browser
 - ✅ Drag-and-drop file upload
@@ -433,7 +434,14 @@ MIT License - see LICENSE file for details
 
 ## Version History
 
-**v2.0.0** (October 2025)
+**v2.0.1** (October 21, 2025)
+- 🌐 **Custom domain launched** - https://analisethis.frankyredente.com
+- Fixed Railway build timeout issue (simplified nixpacks config)
+- Fixed CORS error for custom domain access
+- Improved deployment stability and build times
+- Documentation updated with Railway deployment details
+
+**v2.0.0** (October 20-21, 2025)
 - 🌐 **Web application released** - Full-stack React + FastAPI app
 - Enhanced ElevenLabs analysis with 5-criteria suitability scoring
 - Dynamic range measurement
@@ -443,6 +451,7 @@ MIT License - see LICENSE file for details
 - Mobile-responsive design
 - Deployed on Vercel (frontend) + Railway (backend)
 - Direct links to ElevenLabs documentation
+- Monetization system with Buy Me a Coffee integration
 
 **v1.0.0** (October 2025)
 - Initial CLI tool release

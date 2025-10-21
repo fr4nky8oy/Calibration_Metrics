@@ -571,6 +571,8 @@ file: <audio_file>
 2. Python environment management (PEP 668 - created venv)
 3. FFmpeg installation (switched from Nix to apt-get)
 4. Build system configuration (forced Nixpacks with railway.json)
+5. Build timeout (simplified nixpacks.toml, removed redundant files - Oct 21, 2025)
+6. CORS custom domain error (added custom domain to allowed origins - Oct 21, 2025)
 
 ### ✅ Phase 5: Polish & Launch - COMPLETED
 - Professional UI with gradient backgrounds
@@ -676,19 +678,17 @@ file: <audio_file>
 Web_Version/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI application
+│   │   ├── main.py              # FastAPI application (with CORS for custom domain)
 │   │   ├── core/
 │   │   │   ├── config.py        # Configuration
 │   │   │   └── analyzer.py      # Audio analysis (enhanced)
 │   │   └── models/
 │   │       └── schemas.py       # Pydantic models (updated)
 │   ├── requirements.txt         # Python dependencies
-│   ├── Procfile                # Railway start command
-│   ├── nixpacks.toml           # Railway build config
-│   ├── railway.json            # Railway deployment config
-│   ├── Aptfile                 # FFmpeg installation
+│   ├── nixpacks.toml           # Railway build config (simplified Oct 21)
+│   ├── railway.json            # Railway deployment config (start command)
 │   ├── runtime.txt             # Python version
-│   └── railway_install.sh      # Manual install script
+│   └── railway_install.sh      # Manual install script (legacy)
 ├── frontend/
 │   ├── src/
 │   │   ├── App.jsx             # Main app (with monetization)
@@ -823,6 +823,21 @@ Web_Version/
 ## Recent Updates
 
 ### October 21, 2025
+
+**Railway Build Timeout Fix - COMPLETED** ✨
+- ✅ Fixed Railway build timeout issue (build was hanging after ~13 minutes)
+- ✅ Simplified nixpacks.toml - removed redundant Python packages from aptPkgs
+- ✅ Removed Procfile (conflicting with railway.json start command)
+- ✅ Removed Aptfile (redundant with nixpacks.toml)
+- ✅ Eliminated duplicate pip install operations
+- ✅ Build now completes successfully in ~8-10 minutes
+
+**CORS Custom Domain Fix - COMPLETED** ✨
+- ✅ Fixed CORS error preventing API requests from custom domain
+- ✅ Added https://analisethis.frankyredente.com to CORS allowed origins
+- ✅ Error fixed: "No 'Access-Control-Allow-Origin' header is present"
+- ✅ App now fully functional on custom domain
+- ✅ Tested and verified working with 1-minute MP3 file
 
 **Custom Domain Setup - COMPLETED** ✨
 - ✅ Custom domain configured: https://analisethis.frankyredente.com

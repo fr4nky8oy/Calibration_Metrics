@@ -236,16 +236,28 @@ print(response.json())
 
 ## Configuration
 
+### CORS Configuration
+
+CORS is configured in `app/main.py` using regex patterns:
+
+```python
+# Current configuration (updated Oct 21, 2025)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.netlify\.app|https://analisethis\.frankyredente\.com|http://localhost:\d+",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+To add your custom domain, update the regex pattern in `app/main.py` line 33.
+
+### Other Settings
+
 Edit `app/core/config.py` to change settings:
 
 ```python
-# CORS Origins (add your frontend URLs)
-CORS_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://your-app.vercel.app",
-]
-
 # Max file size (default: 100MB)
 MAX_FILE_SIZE = 100 * 1024 * 1024
 
@@ -253,35 +265,76 @@ MAX_FILE_SIZE = 100 * 1024 * 1024
 ALLOWED_EXTENSIONS = [".wav", ".mp3", ".flac", ".m4a"]
 ```
 
-## Deployment to Render.com
+## Deployment to Railway
 
-### 1. Create Web Service
+**Note:** This project is currently deployed on Railway (not Render) due to better memory allocation for audio processing.
 
-1. Go to https://render.com
-2. Click "New +" → "Web Service"
-3. Connect your GitHub repository
-4. Select the repository
+### 1. Create New Project
 
-### 2. Configure Service
+1. Go to https://railway.app
+2. Click "New Project" → "Deploy from GitHub repo"
+3. Connect your GitHub account and select repository
+4. Railway will auto-detect the project
 
-- **Name:** acx-audio-analyzer-api
-- **Region:** Oregon (US West) or closest to you
-- **Branch:** main
-- **Root Directory:** `Web_Version/backend`
-- **Runtime:** Python 3
-- **Build Command:** `pip install -r requirements.txt`
-- **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+### 2. Configuration Files
+
+The deployment is configured via these files (already set up):
+
+**`railway.json`** - Deployment settings:
+```json
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksConfigPath": "nixpacks.toml"
+  },
+  "deploy": {
+    "startCommand": "/opt/venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+  }
+}
+```
+
+**`nixpacks.toml`** - Build configuration (simplified Oct 21, 2025):
+```toml
+[phases.setup]
+aptPkgs = ["ffmpeg"]
+
+[phases.install]
+cmds = [
+  "python3 -m venv /opt/venv",
+  "/opt/venv/bin/pip install --upgrade pip",
+  "/opt/venv/bin/pip install -r requirements.txt"
+]
+
+[start]
+cmd = "/opt/venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+```
 
 ### 3. Environment Variables
 
-Add these in Render dashboard:
-- (None required for basic setup)
+No environment variables required for basic setup.
 
 ### 4. Deploy
 
-Click "Create Web Service" and wait for deployment (5-10 minutes)
+1. Push changes to GitHub
+2. Railway auto-deploys from the main branch
+3. Build takes ~8-10 minutes
+4. Your API will be available at: `https://your-project.up.railway.app`
 
-Your API will be available at: `https://your-app.onrender.com`
+### 5. Railway Settings
+
+- **Memory:** 8GB RAM (required for audio processing)
+- **Cost:** ~$5-10/month
+- **Auto-deploy:** Enabled from GitHub main branch
+
+### Deployment Troubleshooting
+
+**Build timeout:**
+- Ensure `nixpacks.toml` is simplified (see above)
+- Remove redundant `Procfile` and `Aptfile` if present
+
+**CORS errors:**
+- Add your custom domain to `app/main.py` CORS middleware (line 33)
 
 ## Troubleshooting
 
