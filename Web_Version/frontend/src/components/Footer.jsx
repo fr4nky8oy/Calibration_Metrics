@@ -11,7 +11,16 @@ const Footer = () => {
               No data is stored or logged. 100% secure and private.
             </p>
           </div>
-          <div className="flex items-center space-x-6 text-sm text-gray-600">
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <a
+              href="https://frankyredente.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gray-900 transition-colors"
+            >
+              Franky Redente
+            </a>
+            <span className="text-gray-400">|</span>
             <a
               href="https://github.com/fr4nky8oy/Calibration_Metrics"
               target="_blank"
@@ -19,6 +28,13 @@ const Footer = () => {
               className="hover:text-gray-900 transition-colors"
             >
               GitHub
+            </a>
+            <span className="text-gray-400">|</span>
+            <a
+              href="mailto:frankyredente@gmail.com"
+              className="hover:text-gray-900 transition-colors"
+            >
+              Contact
             </a>
           </div>
         </div>

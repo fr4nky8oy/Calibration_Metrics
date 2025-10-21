@@ -1,4 +1,4 @@
-const Header = () => {
+const Header = ({ onSupportClick }) => {
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -12,9 +12,12 @@ const Header = () => {
             </p>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Free & Open Source
-            </span>
+            <button
+              onClick={onSupportClick}
+              className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors cursor-pointer"
+            >
+              Support This Project
+            </button>
           </div>
         </div>
 

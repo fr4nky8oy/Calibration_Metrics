@@ -105,7 +105,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+      <Header onSupportClick={() => setShowPaymentModal(true)} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="space-y-8">
