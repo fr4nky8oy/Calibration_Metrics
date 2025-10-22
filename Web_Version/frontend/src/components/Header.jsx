@@ -4,7 +4,7 @@ const Header = ({ onSupportClick }) => {
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div>
-            <div className="inline-block">
+            <div>
               <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-3">
                 {/* Left waveform */}
                 <div className="flex items-center gap-1">
@@ -26,9 +26,10 @@ const Header = ({ onSupportClick }) => {
                   <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
                 </div>
               </h1>
-              <p className="mt-2 text-xs text-gray-600">
-                Audio Analysis for ACX audiobooks & Voice Cloning standards
-              </p>
+              <div className="mt-2 flex justify-between items-center">
+                <span className="text-sm text-gray-600">Audio Analysis for ACX audiobooks</span>
+                <span className="text-sm text-gray-600">& Voice Cloning standards</span>
+              </div>
             </div>
           </div>
           <div className="flex items-center space-x-2">
