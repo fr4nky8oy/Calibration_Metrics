@@ -27,8 +27,8 @@ const Header = ({ onSupportClick }) => {
                 </div>
               </h1>
               <div className="mt-2 flex justify-between items-center">
-                <span className="text-sm text-gray-600">Audio Analysis for ACX audiobooks</span>
-                <span className="text-sm text-gray-600">& Voice Cloning standards</span>
+                <span className="text-xs text-gray-600">Audio Analysis for ACX audiobooks</span>
+                <span className="text-xs text-gray-600">& Voice Cloning standards</span>
               </div>
             </div>
           </div>
