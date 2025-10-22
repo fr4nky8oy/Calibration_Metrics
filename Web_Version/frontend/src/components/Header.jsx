@@ -9,7 +9,7 @@ const Header = ({ onSupportClick }) => {
               Analise This
               <span className="text-4xl">📊</span>
             </h1>
-            <p className="mt-2 text-base text-gray-600 ml-14">
+            <p className="mt-2 text-base text-gray-600">
               Professional audio analysis for ACX audiobook standards & ElevenLabs voice cloning
             </p>
           </div>
