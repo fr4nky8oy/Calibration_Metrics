@@ -4,10 +4,12 @@ const Header = ({ onSupportClick }) => {
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              AnaliseThis
+            <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-3">
+              <span className="text-4xl">🎤</span>
+              Analise This
+              <span className="text-4xl">📊</span>
             </h1>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-2 text-base text-gray-600 ml-14">
               Professional audio analysis for ACX audiobook standards & ElevenLabs voice cloning
             </p>
           </div>
