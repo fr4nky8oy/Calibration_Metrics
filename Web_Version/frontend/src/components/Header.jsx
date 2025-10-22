@@ -4,30 +4,32 @@ const Header = ({ onSupportClick }) => {
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-4">
-              {/* Left waveform */}
-              <div className="flex items-center gap-1">
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0s' }}></div>
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.1s' }}></div>
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.2s' }}></div>
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.3s' }}></div>
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '14px', animationDelay: '0.4s' }}></div>
-              </div>
+            <div className="inline-block">
+              <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-3">
+                {/* Left waveform */}
+                <div className="flex items-center gap-1">
+                  <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0s' }}></div>
+                  <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.1s' }}></div>
+                  <div className="w-1 bg-purple-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.2s' }}></div>
+                  <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.3s' }}></div>
+                  <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '14px', animationDelay: '0.4s' }}></div>
+                </div>
 
-              Analise This
+                Analise This
 
-              {/* Right waveform */}
-              <div className="flex items-center gap-1">
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-2" style={{ height: '14px', animationDelay: '0.5s' }}></div>
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.6s' }}></div>
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.7s' }}></div>
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.8s' }}></div>
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
-              </div>
-            </h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Professional audio analysis for ACX audiobook standards & ElevenLabs voice cloning
-            </p>
+                {/* Right waveform */}
+                <div className="flex items-center gap-1">
+                  <div className="w-1 bg-purple-500 rounded-full animate-wave-2" style={{ height: '14px', animationDelay: '0.5s' }}></div>
+                  <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.6s' }}></div>
+                  <div className="w-1 bg-blue-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.7s' }}></div>
+                  <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.8s' }}></div>
+                  <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
+                </div>
+              </h1>
+              <p className="mt-2 text-xs text-gray-600">
+                Audio Analysis for ACX audiobooks & Voice Cloning standards
+              </p>
+            </div>
           </div>
           <div className="flex items-center space-x-2">
             <button
