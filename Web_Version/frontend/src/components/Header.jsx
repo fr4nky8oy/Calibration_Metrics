@@ -26,7 +26,7 @@ const Header = ({ onSupportClick }) => {
                   <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
                 </div>
               </h1>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-gray-600" style={{ fontSize: '0.8125rem' }}>
                 Audio Analysis for ACX audiobooks & Voice Cloning standards
               </p>
             </div>
