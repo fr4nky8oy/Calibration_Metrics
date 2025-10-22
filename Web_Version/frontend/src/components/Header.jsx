@@ -26,10 +26,9 @@ const Header = ({ onSupportClick }) => {
                   <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
                 </div>
               </h1>
-              <div className="mt-2 flex justify-between items-center">
-                <span className="text-xs text-gray-600">Audio Analysis for ACX audiobooks</span>
-                <span className="text-xs text-gray-600">& Voice Cloning standards</span>
-              </div>
+              <p className="mt-2 text-sm text-gray-600">
+                Audio Analysis for ACX audiobooks & Voice Cloning standards
+              </p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
