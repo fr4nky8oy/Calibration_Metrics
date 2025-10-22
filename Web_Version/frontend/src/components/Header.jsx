@@ -4,23 +4,27 @@ const Header = ({ onSupportClick }) => {
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div>
-            <div className="relative">
-              <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-3">
-                <span className="text-4xl">🎤</span>
-                Analise This
-                <span className="text-4xl">📊</span>
-              </h1>
-              {/* Animated waveform bars */}
-              <div className="flex items-center gap-1 mt-1">
+            <h1 className="text-5xl font-bold text-gray-900 flex items-center gap-4">
+              {/* Left waveform */}
+              <div className="flex items-center gap-1">
                 <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0s' }}></div>
                 <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.1s' }}></div>
                 <div className="w-1 bg-purple-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.2s' }}></div>
                 <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.3s' }}></div>
                 <div className="w-1 bg-blue-500 rounded-full animate-wave-1" style={{ height: '14px', animationDelay: '0.4s' }}></div>
-                <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '8px', animationDelay: '0.5s' }}></div>
-                <div className="w-1 bg-purple-500 rounded-full animate-wave-3" style={{ height: '12px', animationDelay: '0.6s' }}></div>
               </div>
-            </div>
+
+              Analise This
+
+              {/* Right waveform */}
+              <div className="flex items-center gap-1">
+                <div className="w-1 bg-purple-500 rounded-full animate-wave-2" style={{ height: '14px', animationDelay: '0.5s' }}></div>
+                <div className="w-1 bg-purple-500 rounded-full animate-wave-4" style={{ height: '10px', animationDelay: '0.6s' }}></div>
+                <div className="w-1 bg-blue-500 rounded-full animate-wave-3" style={{ height: '16px', animationDelay: '0.7s' }}></div>
+                <div className="w-1 bg-blue-500 rounded-full animate-wave-2" style={{ height: '12px', animationDelay: '0.8s' }}></div>
+                <div className="w-1 bg-purple-500 rounded-full animate-wave-1" style={{ height: '8px', animationDelay: '0.9s' }}></div>
+              </div>
+            </h1>
             <p className="mt-2 text-sm text-gray-600">
               Professional audio analysis for ACX audiobook standards & ElevenLabs voice cloning
             </p>
