@@ -30,7 +30,12 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.netlify\.app|https://analisethis\.frankyredente\.com|http://localhost:\d+",
+    allow_origins=[
+        "https://calibration-metrics.vercel.app",  # Vercel deployment
+        "https://analisethis.frankyredente.com",   # Custom domain
+        "http://localhost:5173",                    # Local development (Vite)
+        "http://localhost:3000",                    # Alternative local port
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
