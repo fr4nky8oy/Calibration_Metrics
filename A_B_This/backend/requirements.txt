@@ -1,0 +1,21 @@
+# A/B This Backend Dependencies
+
+# Web framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Audio analysis
+librosa>=0.10.1
+soundfile>=0.12.1
+pyloudnorm>=0.1.1
+numpy>=1.26.4
+scipy>=1.11.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Additional utilities
+aiofiles>=23.2.1

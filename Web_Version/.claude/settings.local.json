@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/frankyredente/Music/Claude/VST_Vibe_Coding/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

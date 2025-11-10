@@ -1,0 +1,35 @@
+/Users/frankyredente/Music/Claude/CalibrationMetrics/A_B_This/backend/app/core/resonance_detector.py:24: UserWarning: nperseg=8192 is greater than signal length max(len(x), len(y)) = 221, using nperseg = 221
+  frequencies, psd = signal.welch(audio, sr, nperseg=nfft, scaling='spectrum')
+Traceback (most recent call last):
+  File "/Users/frankyredente/Music/Claude/CalibrationMetrics/A_B_This/backend/test_comparison.py", line 54, in test_comparison
+    results = compare_audio_files(your_mix, reference, downsample_sr=22050)
+  File "/Users/frankyredente/Music/Claude/CalibrationMetrics/A_B_This/backend/app/core/comparator.py", line 56, in compare_audio_files
+    'resonances': detect_resonances(your_mix_mono, downsample_sr),
+                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/frankyredente/Music/Claude/CalibrationMetrics/A_B_This/backend/app/core/resonance_detector.py", line 35, in detect_resonances
+    peaks, properties = signal.find_peaks(
+                        ~~~~~~~~~~~~~~~~~^
+        magnitude_db,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        distance=int(len(frequencies) / 200)  # At least ~100Hz apart
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/frankyredente/Music/Claude/CalibrationMetrics/A_B_This/backend/venv/lib/python3.13/site-packages/scipy/signal/_peak_finding.py", line 941, in find_peaks
+    raise ValueError('`distance` must be greater or equal to 1')
+ValueError: `distance` must be greater or equal to 1
+
+============================================================
+A/B This - Comparison Test
+============================================================
+
+Your Mix:   test-44100Hz-2ch-32bit-float-le.wav
+Reference:  test-44100Hz-le-1ch-4bytes.wav
+
+Analyzing...
+
+Loading files...
+Analyzing your mix...
+
+❌ Error: `distance` must be greater or equal to 1
