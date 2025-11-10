@@ -110,6 +110,9 @@ async def compare_tracks(
             return results
 
         except Exception as e:
+            import traceback
+            error_trace = traceback.format_exc()
+            print(f"ERROR: {error_trace}")
             raise HTTPException(
                 status_code=500,
                 detail=f"Analysis failed: {str(e)}"
