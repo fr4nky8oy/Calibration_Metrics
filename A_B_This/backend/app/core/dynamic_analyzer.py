@@ -202,11 +202,12 @@ def _generate_dynamic_suggestions(
     if crest_diff > 2:
         # Your mix is too dynamic
         compression_amount = round(crest_diff * 0.6, 1)
+        method = 'parallel compression' if crest_diff > 4 else 'gentle compression'
         suggestions['compression'] = {
             'action': 'add_compression',
             'amount_db': compression_amount,
-            'method': 'parallel compression' if crest_diff > 4 else 'gentle compression',
-            'message': f"Apply {compression_amount}dB of compression to match reference density. Consider {suggestions['compression']['method']} to maintain some dynamics."
+            'method': method,
+            'message': f"Apply {compression_amount}dB of compression to match reference density. Consider {method} to maintain some dynamics."
         }
     elif crest_diff < -2:
         # Your mix is too compressed
