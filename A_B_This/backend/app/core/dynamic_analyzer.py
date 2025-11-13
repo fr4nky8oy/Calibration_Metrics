@@ -228,7 +228,7 @@ def _generate_dynamic_suggestions(
             'amount_db': compression_amount,
             'difference': round(crest_diff, 1),
             'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Add {compression_amount}dB of parallel compression on the mix bus. Try a ratio of 4:1 with slow attack (30-50ms) and medium release (auto or 100-200ms). This will reduce the crest factor while maintaining transient punch.",
-            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 2, Waves SSL G-Master Buss Compressor, UAD Neve 33609"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
     elif crest_diff > 1.5:
         # Your mix is moderately too dynamic
@@ -238,7 +238,7 @@ def _generate_dynamic_suggestions(
             'amount_db': compression_amount,
             'difference': round(crest_diff, 1),
             'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Add gentle compression (2-3:1 ratio) on the mix bus with slow attack (30ms+) to bring peaks closer to the average level. Target {compression_amount}dB of gain reduction.",
-            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 2, Slate Digital FG-X, Waves API 2500"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
     elif crest_diff > 0.5:
         # Your mix is slightly too dynamic
@@ -246,7 +246,7 @@ def _generate_dynamic_suggestions(
             'action': 'add_light_compression',
             'difference': round(crest_diff, 1),
             'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Consider adding very gentle compression (2:1 ratio, slow attack) or subtle parallel compression to slightly reduce dynamic range.",
-            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 2, Waves CLA-76"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
     elif crest_diff < -3:
         # Your mix is significantly over-compressed
@@ -254,7 +254,7 @@ def _generate_dynamic_suggestions(
             'action': 'reduce_compression',
             'difference': round(abs(crest_diff), 1),
             'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Reduce mix bus compression/limiting significantly. Check individual track compression and ease off threshold/ratio settings. Your mix may sound squashed - aim for more breathing room.",
-            'recommended_plugins': "Review settings in: iZotope Ozone Maximizer, FabFilter Pro-L 2, Waves L2/L3"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
     elif crest_diff < -1.5:
         # Your mix is moderately over-compressed
@@ -262,7 +262,7 @@ def _generate_dynamic_suggestions(
             'action': 'reduce_compression',
             'difference': round(abs(crest_diff), 1),
             'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Reduce mix bus compression by lowering ratio or raising threshold. If using a limiter, reduce gain into it or increase ceiling. This will restore some dynamic range.",
-            'recommended_plugins': "Adjust: iZotope Ozone Dynamics/Maximizer, FabFilter Pro-C 2/Pro-L 2"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
     elif crest_diff < -0.5:
         # Your mix is slightly over-compressed
@@ -270,7 +270,7 @@ def _generate_dynamic_suggestions(
             'action': 'reduce_light_compression',
             'difference': round(abs(crest_diff), 1),
             'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Try slightly reducing mix bus compression (lower ratio or ease threshold) to allow a bit more dynamic variation.",
-            'recommended_plugins': "Fine-tune: iZotope Ozone Dynamics, FabFilter Pro-C 2"
+            'recommended_plugins': "iZotope Ozone Dynamics, FabFilter Pro-C 3, SSL Native Bus Compressor 2"
         }
 
     # Loudness/gain suggestions

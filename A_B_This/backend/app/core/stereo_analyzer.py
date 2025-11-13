@@ -322,14 +322,14 @@ def _generate_stereo_suggestions(
             'action': 'widen',
             'amount': f"{abs(width_diff):.1f}%",
             'message': f"Your mix is {abs(width_diff):.1f}% narrower than reference. Consider using stereo widener or mid-side processing.",
-            'recommended_plugins': "iZotope Ozone Imager, Waves S1 Stereo Imager, FabFilter Pro-Q 3 (Mid-Side mode), Goodhertz MidSide"
+            'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
         }
     elif width_diff > 15:
         suggestions['overall'] = {
             'action': 'narrow',
             'amount': f"{width_diff:.1f}%",
             'message': f"Your mix is {width_diff:.1f}% wider than reference. Consider reducing stereo enhancement or check for phase issues.",
-            'recommended_plugins': "iZotope Ozone Imager, Waves S1 Stereo Imager, FabFilter Pro-Q 3 (Mid-Side mode), Voxengo MSED (free)"
+            'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
         }
 
     # Per-band suggestions
@@ -342,19 +342,19 @@ def _generate_stereo_suggestions(
                 suggestions['per_band'].append({
                     'band': band_name,
                     'message': f"Low end is {diff:.1f}% too wide. Use mid-side EQ to make bass/kick more mono for better power and punch.",
-                    'recommended_plugins': "FabFilter Pro-Q 3 (Mid-Side mode), iZotope Ozone EQ, Waves Center"
+                    'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
                 })
         elif diff > 15:
             suggestions['per_band'].append({
                 'band': band_name,
                 'message': f"{band_name.replace('_', ' ').title()} is {diff:.1f}% wider. Consider narrowing this range slightly.",
-                'recommended_plugins': "FabFilter Pro-Q 3 (Mid-Side), iZotope Ozone Imager, Waves S1"
+                'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
             })
         elif diff < -15:
             suggestions['per_band'].append({
                 'band': band_name,
                 'message': f"{band_name.replace('_', ' ').title()} is {abs(diff):.1f}% narrower. Consider widening this range for more spaciousness.",
-                'recommended_plugins': "FabFilter Pro-Q 3 (Mid-Side), iZotope Ozone Imager, Waves S1"
+                'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
             })
 
     # Phase correlation suggestions
@@ -362,13 +362,13 @@ def _generate_stereo_suggestions(
         suggestions['phase'] = {
             'severity': 'critical',
             'message': "⚠️ Critical phase issues detected. Mix will collapse in mono. Check for out-of-phase stereo processing.",
-            'recommended_plugins': "Check phase with: iZotope Ozone Imager, Waves PAZ Analyzer, Voxengo SPAN (free)"
+            'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
         }
     elif your_mix['phase_correlation'] < 0 and reference['phase_correlation'] > 0:
         suggestions['phase'] = {
             'severity': 'warning',
             'message': "⚠️ Your mix has phase issues that reference doesn't. Check stereo wideners and verify mono compatibility.",
-            'recommended_plugins': "Fix phase with: iZotope RX (Phase module), Sound Radix Auto-Align, InPhase (free)"
+            'recommended_plugins': "iZotope Ozone MultiBand Imager, IK Multimedia Quad Image"
         }
 
     return suggestions
