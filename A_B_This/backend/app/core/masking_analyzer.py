@@ -135,8 +135,11 @@ def compare_masking(
     your_issues = your_mix_masking['masking_issues']
     ref_issues = reference_masking['masking_issues']
 
-    # Generate suggestions for issues unique to your mix
+    # Generate suggestions for issues
     suggestions = []
+
+    # Calculate clarity difference to determine suggestion strategy
+    clarity_diff = your_mix_masking['clarity_score'] - reference_masking['clarity_score']
 
     for issue in your_issues:
         # Check if reference has same issue
@@ -145,22 +148,33 @@ def compare_masking(
             for ri in ref_issues
         )
 
-        if not ref_has_issue:
-            # Your mix has masking that reference doesn't
+        # Suggest fixes if:
+        # 1. Your mix has unique masking issues, OR
+        # 2. Both have issues but your clarity is notably worse (diff <= -10), OR
+        # 3. Both have low clarity (< 50) and this is a high severity issue
+        should_suggest = (
+            not ref_has_issue or
+            clarity_diff <= -10 or
+            (your_mix_masking['clarity_score'] < 50 and issue['severity'] == 'high')
+        )
+
+        if should_suggest:
             # Generate specific suggestions based on frequency band
             specific_suggestion = _generate_masking_fix_suggestion(issue)
+
+            # Adjust message if reference also has this issue
+            message = specific_suggestion['message']
+            if ref_has_issue and clarity_diff > -10:
+                message = f"{message} Note: Reference also has masking here, but improving clarity will enhance your mix."
 
             suggestions.append({
                 'bands': issue['bands'].split(' + '),  # Split into array for easier display
                 'frequency': issue['frequency_range'],
-                'message': specific_suggestion['message'],
+                'message': message,
                 'technique': specific_suggestion['technique'],
                 'severity': issue['severity'],
                 'recommended_plugins': specific_suggestion['recommended_plugins']
             })
-
-    # Calculate clarity difference
-    clarity_diff = your_mix_masking['clarity_score'] - reference_masking['clarity_score']
 
     return {
         'your_mix_clarity': your_mix_masking['clarity_score'],
