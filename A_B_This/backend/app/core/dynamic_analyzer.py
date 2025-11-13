@@ -78,7 +78,12 @@ def compare_dynamics(
     plr_diff = your_mix_dynamics['plr'] - reference_dynamics['plr']
 
     # Analyze compression characteristics
-    compression_analysis = _analyze_compression_difference(crest_diff, plr_diff)
+    compression_analysis = _analyze_compression_difference(
+        crest_diff,
+        plr_diff,
+        your_mix_dynamics['crest_factor'],
+        reference_dynamics['crest_factor']
+    )
 
     # Analyze loudness
     loudness_analysis = _analyze_loudness_difference(lufs_diff, rms_diff)
@@ -102,13 +107,20 @@ def compare_dynamics(
     }
 
 
-def _analyze_compression_difference(crest_diff: float, plr_diff: float) -> Dict:
+def _analyze_compression_difference(
+    crest_diff: float,
+    plr_diff: float,
+    your_crest: float,
+    reference_crest: float
+) -> Dict:
     """
     Analyze compression characteristics based on crest factor and PLR
 
     Args:
         crest_diff: Your mix crest factor - reference crest factor
         plr_diff: Your mix PLR - reference PLR
+        your_crest: Your mix crest factor
+        reference_crest: Reference crest factor
 
     Returns:
         Compression analysis dictionary
@@ -136,7 +148,9 @@ def _analyze_compression_difference(crest_diff: float, plr_diff: float) -> Dict:
         'status': status,
         'description': description,
         'crest_factor_difference': round(crest_diff, 1),
-        'dynamic_range_difference': round(plr_diff, 1)
+        'dynamic_range_difference': round(plr_diff, 1),
+        'your_crest_factor': round(your_crest, 1),
+        'reference_crest_factor': round(reference_crest, 1)
     }
 
 
