@@ -85,9 +85,16 @@ def analyze_frequency_masking(audio: np.ndarray, sr: int) -> Dict:
         energy_diff = abs(current['energy_db'] - next_band['energy_db'])
 
         # Both bands loud + similar energy = potential masking
-        if current['energy_db'] > -20 and next_band['energy_db'] > -20:
-            if energy_diff < 3:  # Less than 3dB separation
-                severity = "high" if current['energy_db'] > -15 else "moderate"
+        # Relaxed threshold: if both bands are above -30dB and separation is < 5dB
+        if current['energy_db'] > -30 and next_band['energy_db'] > -30:
+            if energy_diff < 5:  # Less than 5dB separation
+                # More granular severity classification
+                if energy_diff < 2 and current['energy_db'] > -15:
+                    severity = "high"
+                elif energy_diff < 3 or current['energy_db'] > -20:
+                    severity = "moderate"
+                else:
+                    severity = "low"
 
                 masking_issues.append({
                     'bands': f"{current['name']} + {next_band['name']}",
@@ -151,11 +158,13 @@ def compare_masking(
         # Suggest fixes if:
         # 1. Your mix has unique masking issues, OR
         # 2. Both have issues but your clarity is notably worse (diff <= -10), OR
-        # 3. Both have low clarity (< 50) and this is a high severity issue
+        # 3. Both have low clarity (< 50) and this is a high or moderate severity issue, OR
+        # 4. Clarity is very low (< 40) - show all issues
         should_suggest = (
             not ref_has_issue or
             clarity_diff <= -10 or
-            (your_mix_masking['clarity_score'] < 50 and issue['severity'] == 'high')
+            (your_mix_masking['clarity_score'] < 50 and issue['severity'] in ['high', 'moderate']) or
+            your_mix_masking['clarity_score'] < 40
         )
 
         if should_suggest:
