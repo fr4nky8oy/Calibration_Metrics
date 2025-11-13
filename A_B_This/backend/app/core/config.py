@@ -20,6 +20,7 @@ class Settings(BaseSettings):
         "http://localhost:5173",
         "http://localhost:5174",
         "https://ab-this.vercel.app",
+        "https://abthis.frankyredente.com",
         "https://*.vercel.app",
     ]
 
