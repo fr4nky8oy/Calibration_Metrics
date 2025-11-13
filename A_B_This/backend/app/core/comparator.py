@@ -266,6 +266,8 @@ def _compile_suggestions(comparison: Dict) -> Dict:
     dynamic_suggestions = comparison['dynamics'].get('suggestions', {})
     if dynamic_suggestions:
         suggestions['compression'] = dynamic_suggestions.get('compression')
+        if dynamic_suggestions.get('crest_factor'):
+            suggestions['crest_factor'] = dynamic_suggestions['crest_factor']
         if dynamic_suggestions.get('gain'):
             suggestions['gain'] = dynamic_suggestions['gain']
         if dynamic_suggestions.get('limiting'):

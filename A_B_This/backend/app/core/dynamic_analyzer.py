@@ -215,25 +215,56 @@ def _generate_dynamic_suggestions(
     suggestions = {
         'compression': None,
         'limiting': None,
-        'gain': None
+        'gain': None,
+        'crest_factor': None
     }
 
-    # Compression suggestions
-    if crest_diff > 1.5:
-        # Your mix is too dynamic
+    # Crest Factor / Compression suggestions
+    if crest_diff > 3:
+        # Your mix is significantly too dynamic
         compression_amount = round(crest_diff * 0.6, 1)
-        method = 'parallel compression' if crest_diff > 4 else 'gentle compression'
-        suggestions['compression'] = {
+        suggestions['crest_factor'] = {
             'action': 'add_compression',
             'amount_db': compression_amount,
-            'method': method,
-            'message': f"Apply {compression_amount}dB of compression to match reference density. Consider {method} to maintain some dynamics."
+            'difference': round(crest_diff, 1),
+            'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Add {compression_amount}dB of parallel compression on the mix bus. Try a ratio of 4:1 with slow attack (30-50ms) and medium release (auto or 100-200ms). This will reduce the crest factor while maintaining transient punch."
+        }
+    elif crest_diff > 1.5:
+        # Your mix is moderately too dynamic
+        compression_amount = round(crest_diff * 0.6, 1)
+        suggestions['crest_factor'] = {
+            'action': 'add_compression',
+            'amount_db': compression_amount,
+            'difference': round(crest_diff, 1),
+            'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Add gentle compression (2-3:1 ratio) on the mix bus with slow attack (30ms+) to bring peaks closer to the average level. Target {compression_amount}dB of gain reduction."
+        }
+    elif crest_diff > 0.5:
+        # Your mix is slightly too dynamic
+        suggestions['crest_factor'] = {
+            'action': 'add_light_compression',
+            'difference': round(crest_diff, 1),
+            'message': f"Your mix is {round(crest_diff, 1)}dB more dynamic than reference. Consider adding very gentle compression (2:1 ratio, slow attack) or subtle parallel compression to slightly reduce dynamic range."
+        }
+    elif crest_diff < -3:
+        # Your mix is significantly over-compressed
+        suggestions['crest_factor'] = {
+            'action': 'reduce_compression',
+            'difference': round(abs(crest_diff), 1),
+            'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Reduce mix bus compression/limiting significantly. Check individual track compression and ease off threshold/ratio settings. Your mix may sound squashed - aim for more breathing room."
         }
     elif crest_diff < -1.5:
-        # Your mix is too compressed
-        suggestions['compression'] = {
+        # Your mix is moderately over-compressed
+        suggestions['crest_factor'] = {
             'action': 'reduce_compression',
-            'message': f"Your mix is {abs(round(crest_diff, 1))}dB more compressed than reference. Consider reducing compression or using less limiting to preserve dynamics."
+            'difference': round(abs(crest_diff), 1),
+            'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Reduce mix bus compression by lowering ratio or raising threshold. If using a limiter, reduce gain into it or increase ceiling. This will restore some dynamic range."
+        }
+    elif crest_diff < -0.5:
+        # Your mix is slightly over-compressed
+        suggestions['crest_factor'] = {
+            'action': 'reduce_light_compression',
+            'difference': round(abs(crest_diff), 1),
+            'message': f"Your mix is {round(abs(crest_diff), 1)}dB more compressed than reference. Try slightly reducing mix bus compression (lower ratio or ease threshold) to allow a bit more dynamic variation."
         }
 
     # Loudness/gain suggestions
