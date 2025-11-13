@@ -191,61 +191,61 @@ def _generate_masking_fix_suggestion(issue: Dict) -> Dict:
     masking_techniques = {
         'Sub Bass + Bass Fundamentals': {
             'message': 'Sub bass and bass fundamentals are competing. Use high-pass filters to separate kick and bass, keeping kick centered below 60Hz and bass above.',
-            'technique': 'HPF bass at 40-60Hz, cut kick at 80-120Hz where bass sits, or use sidechain compression',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ'
+            'technique': 'HPF bass at 40-60Hz, cut kick at 80-120Hz where bass sits, or use sidechain compression. Consider multiband sidechain techniques for frequency-specific ducking.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, FabFilter Pro-Q 3, iZotope Neutron EQ'
         },
         'Bass Fundamentals + Low Mids / Mud Zone': {
             'message': 'Bass bleeding into low-mids creates muddiness. Cut 200-400Hz on bass to make room for guitars/keys.',
-            'technique': 'Cut 200-300Hz on bass (2-4dB), boost same range slightly on rhythm instruments for clarity',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ'
+            'technique': 'Cut 200-300Hz on bass (2-4dB), boost same range slightly on rhythm instruments for clarity. Consider multiband sidechain to dynamically duck bass when other instruments play.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, FabFilter Pro-Q 3, iZotope Neutron EQ'
         },
         'Low Mids / Mud Zone + Low-Mid Body': {
             'message': 'The "mud zone" is cluttered. This is the most common masking problem. Use subtractive EQ to carve space.',
-            'technique': 'Cut 250-400Hz on competing elements. Identify the most important element and cut others in this range',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ, Waves Renaissance EQ'
+            'technique': 'Cut 250-400Hz on competing elements. Identify the most important element and cut others in this range. Consider multiband sidechain techniques for dynamic control.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, Oeksound Soothe2, FabFilter Pro-Q 3, iZotope Neutron EQ'
         },
         'Low-Mid Body + Mid Clarity': {
             'message': 'Low-mids competing with mid clarity. Thin out body frequencies on background elements.',
-            'technique': 'HPF non-essential tracks at 200-300Hz, cut 400-600Hz on rhythm guitars/pads',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ'
+            'technique': 'HPF non-essential tracks at 200-300Hz, cut 400-600Hz on rhythm guitars/pads. Use multiband sidechain to create dynamic space.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, FabFilter Pro-Q 3, iZotope Neutron EQ'
         },
         'Mid Clarity + Vocal Presence': {
             'message': 'Instruments masking vocal presence. Cut 1-2kHz on instruments to create vocal space.',
-            'technique': 'Notch cut at vocal fundamental frequency on guitars/keys, boost 1-3kHz on vocals',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ, Waves F6 Dynamic EQ'
+            'technique': 'Notch cut at vocal fundamental frequency on guitars/keys, boost 1-3kHz on vocals. Consider multiband sidechain techniques to duck instruments when vocals are present.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, Oeksound Soothe2, FabFilter Pro-Q 3, iZotope Neutron EQ'
         },
         'Vocal Presence + High Mids Clarity': {
             'message': 'Vocal presence competing with high-mid instruments. Use dynamic EQ or automation.',
-            'technique': 'Side-chain dynamic EQ: duck 2-4kHz on instruments when vocals are present',
-            'plugins': 'iZotope Neutron (Masking Meter), FabFilter Pro-Q 3 (dynamic EQ), Waves F6'
+            'technique': 'Side-chain dynamic EQ: duck 2-4kHz on instruments when vocals are present. Multiband sidechain is ideal for this application.',
+            'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, Oeksound Soothe2, iZotope Neutron (Masking Meter), FabFilter Pro-Q 3'
         },
         'High Mids Clarity + Articulation': {
             'message': 'Consonants and articulation are masked. Reduce 3-4kHz on instruments, preserve on vocals.',
-            'technique': 'Cut 3-4kHz on dense instruments (synths, guitars), boost 3.5kHz on vocals for clarity',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ'
+            'technique': 'Cut 3-4kHz on dense instruments (synths, guitars), boost 3.5kHz on vocals for clarity. Use dynamic processing to tame resonances.',
+            'plugins': 'Oeksound Soothe2, Wavesfactory Trackspacer, iDX Intelligent Dynamics, FabFilter Pro-Q 3'
         },
         'Articulation + Brightness': {
             'message': 'Too much energy in upper-mids. De-ess vocals and tame harsh instruments.',
-            'technique': 'De-ess vocals at 5-7kHz, cut 4-6kHz on harsh synths/guitars',
-            'plugins': 'FabFilter Pro-DS, Waves Renaissance DeEsser, iZotope Neutron EQ'
+            'technique': 'De-ess vocals at 5-7kHz, cut 4-6kHz on harsh synths/guitars. Use dynamic resonance suppression for problem frequencies.',
+            'plugins': 'Oeksound Soothe2, FabFilter Pro-DS, Waves Renaissance DeEsser, iZotope Neutron EQ'
         },
         'Brightness + Air': {
             'message': 'High frequencies are congested. Use shelving EQ to control excessive brightness.',
-            'technique': 'HPF non-essential elements above 8kHz, use gentle high-shelf cut on busy mixes',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Ozone EQ'
+            'technique': 'HPF non-essential elements above 8kHz, use gentle high-shelf cut on busy mixes. Dynamic resonance control helps tame harshness.',
+            'plugins': 'Oeksound Soothe2, FabFilter Pro-Q 3, iZotope Ozone EQ'
         },
         'Air + Sparkle': {
             'message': 'Extreme highs are competing. Preserve air only on key elements (vocals, cymbals).',
-            'technique': 'HPF most tracks above 10kHz, keep sparkle only on vocals, overheads, and featured instruments',
-            'plugins': 'FabFilter Pro-Q 3, iZotope Ozone EQ'
+            'technique': 'HPF most tracks above 10kHz, keep sparkle only on vocals, overheads, and featured instruments. Use dynamic processing to control excessive sibilance.',
+            'plugins': 'Oeksound Soothe2, FabFilter Pro-Q 3, iZotope Ozone EQ'
         }
     }
 
     # Get specific advice or provide generic advice
     advice = masking_techniques.get(bands, {
         'message': f'Overlapping energy between {bands}. Create separation by reducing one frequency range.',
-        'technique': 'Use EQ to cut competing frequencies on less important elements, or use dynamic EQ to duck when conflicts occur',
-        'plugins': 'FabFilter Pro-Q 3, iZotope Neutron EQ'
+        'technique': 'Use EQ to cut competing frequencies on less important elements, or use dynamic EQ to duck when conflicts occur. Consider multiband sidechain techniques for frequency-specific control.',
+        'plugins': 'Wavesfactory Trackspacer, iDX Intelligent Dynamics, Oeksound Soothe2, FabFilter Pro-Q 3, iZotope Neutron EQ'
     })
 
     return {
