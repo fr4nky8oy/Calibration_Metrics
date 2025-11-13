@@ -131,18 +131,18 @@ def _analyze_compression_difference(
     if crest_diff > 3:
         status = "much_less_compressed"
         description = "Your mix is significantly less compressed than the reference"
-    elif crest_diff > 1.5:
+    elif crest_diff > 1.0:
         status = "less_compressed"
         description = "Your mix is less compressed than the reference"
     elif crest_diff < -3:
         status = "much_more_compressed"
         description = "Your mix is significantly more compressed than the reference"
-    elif crest_diff < -1.5:
+    elif crest_diff < -1.0:
         status = "more_compressed"
         description = "Your mix is more compressed than the reference"
     else:
-        status = "similar"
-        description = "Your mix has similar compression to the reference"
+        status = "well_matched"
+        description = "Your mix has well-matched compression to the reference"
 
     return {
         'status': status,
@@ -170,17 +170,23 @@ def _analyze_loudness_difference(lufs_diff: float, rms_diff: float) -> Dict:
 
     if lufs_diff > 3:
         status = "much_louder"
+        description = "Your mix is significantly louder than the reference"
     elif lufs_diff > 1:
         status = "louder"
+        description = "Your mix is louder than the reference"
     elif lufs_diff < -3:
         status = "much_quieter"
+        description = "Your mix is significantly quieter than the reference"
     elif lufs_diff < -1:
         status = "quieter"
+        description = "Your mix is quieter than the reference"
     else:
-        status = "similar"
+        status = "well_matched"
+        description = "Your mix has well-matched loudness to the reference"
 
     return {
         'status': status,
+        'description': description,
         'lufs_difference': round(lufs_diff, 1),
         'rms_difference': round(rms_diff, 1)
     }
@@ -213,7 +219,7 @@ def _generate_dynamic_suggestions(
     }
 
     # Compression suggestions
-    if crest_diff > 2:
+    if crest_diff > 1.5:
         # Your mix is too dynamic
         compression_amount = round(crest_diff * 0.6, 1)
         method = 'parallel compression' if crest_diff > 4 else 'gentle compression'
@@ -223,7 +229,7 @@ def _generate_dynamic_suggestions(
             'method': method,
             'message': f"Apply {compression_amount}dB of compression to match reference density. Consider {method} to maintain some dynamics."
         }
-    elif crest_diff < -2:
+    elif crest_diff < -1.5:
         # Your mix is too compressed
         suggestions['compression'] = {
             'action': 'reduce_compression',
@@ -231,7 +237,7 @@ def _generate_dynamic_suggestions(
         }
 
     # Loudness/gain suggestions
-    if abs(lufs_diff) > 1.5:
+    if abs(lufs_diff) > 1.0:
         gain_adjustment = round(-lufs_diff, 1)
         suggestions['gain'] = {
             'action': 'adjust_gain',
