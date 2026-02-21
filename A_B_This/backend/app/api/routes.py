@@ -56,7 +56,8 @@ async def compare_tracks(
         )
 
     # Check file sizes - hardcoded to prevent environment variable override
-    max_size = 100 * 1024 * 1024  # 100MB
+    # Note: Users upload full songs but only analyze 40-second regions
+    max_size = 250 * 1024 * 1024  # 250MB (handles most uncompressed audio files)
 
     # Initialize variables for cleanup
     your_mix_temp = None
@@ -72,7 +73,7 @@ async def compare_tracks(
             if len(content) > max_size:
                 raise HTTPException(
                     status_code=400,
-                    detail="Your mix file too large. Max size: 100MB"
+                    detail="Your mix file too large. Max size: 250MB"
                 )
 
             your_mix_temp.write(content)
@@ -84,7 +85,7 @@ async def compare_tracks(
             if len(content) > max_size:
                 raise HTTPException(
                     status_code=400,
-                    detail="Reference file too large. Max size: 100MB"
+                    detail="Reference file too large. Max size: 250MB"
                 )
 
             reference_temp.write(content)
