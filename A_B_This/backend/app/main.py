@@ -20,18 +20,14 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configure CORS
-# Filter out wildcard patterns and add explicit domains
-cors_origins = [origin for origin in settings.cors_origins if not origin.endswith("*.vercel.app")]
-
-# Ensure all required domains are included
-required_domains = [
+# Configure CORS - hardcoded to avoid environment variable issues
+cors_origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5174",
     "https://ab-this.vercel.app",
     "https://abthis.frankyredente.com",
 ]
-for domain in required_domains:
-    if domain not in cors_origins:
-        cors_origins.append(domain)
 
 app.add_middleware(
     CORSMiddleware,

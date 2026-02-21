@@ -134,3 +134,13 @@ async def health_check() -> Dict:
         "app": settings.app_name,
         "version": settings.app_version
     }
+
+
+@router.get("/debug/cors")
+async def debug_cors() -> Dict:
+    """Debug endpoint to check CORS configuration"""
+    return {
+        "cors_origins": settings.cors_origins,
+        "environment": settings.environment,
+        "debug": settings.debug
+    }
