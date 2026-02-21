@@ -20,10 +20,18 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configure CORS with wildcard support
-# For Vercel deployments, we need to handle *.vercel.app dynamically
+# Configure CORS
+# Filter out wildcard patterns and add explicit domains
 cors_origins = [origin for origin in settings.cors_origins if not origin.endswith("*.vercel.app")]
-cors_origins.append("https://ab-this.vercel.app")  # Explicit main domain
+
+# Ensure all required domains are included
+required_domains = [
+    "https://ab-this.vercel.app",
+    "https://abthis.frankyredente.com",
+]
+for domain in required_domains:
+    if domain not in cors_origins:
+        cors_origins.append(domain)
 
 app.add_middleware(
     CORSMiddleware,
