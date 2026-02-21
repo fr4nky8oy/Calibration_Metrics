@@ -55,8 +55,8 @@ async def compare_tracks(
             detail=f"Unsupported file format for reference: {reference_ext}. Allowed: {settings.allowed_extensions}"
         )
 
-    # Check file sizes
-    max_size = settings.max_file_size_mb * 1024 * 1024
+    # Check file sizes - hardcoded to prevent environment variable override
+    max_size = 100 * 1024 * 1024  # 100MB
 
     # Initialize variables for cleanup
     your_mix_temp = None
@@ -72,7 +72,7 @@ async def compare_tracks(
             if len(content) > max_size:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Your mix file too large. Max size: {settings.max_file_size_mb}MB"
+                    detail="Your mix file too large. Max size: 100MB"
                 )
 
             your_mix_temp.write(content)
@@ -84,7 +84,7 @@ async def compare_tracks(
             if len(content) > max_size:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Reference file too large. Max size: {settings.max_file_size_mb}MB"
+                    detail="Reference file too large. Max size: 100MB"
                 )
 
             reference_temp.write(content)
