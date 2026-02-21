@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     ]
 
     # File upload settings
-    max_file_size_mb: int = 50
+    max_file_size_mb: int = 100
     allowed_extensions: List[str] = [".wav", ".mp3", ".flac", ".m4a", ".aiff", ".ogg"]
 
     # Audio processing settings

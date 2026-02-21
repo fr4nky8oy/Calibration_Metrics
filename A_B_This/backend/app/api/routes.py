@@ -58,9 +58,11 @@ async def compare_tracks(
     # Check file sizes
     max_size = settings.max_file_size_mb * 1024 * 1024
 
-    # Create temporary files
+    # Initialize variables for cleanup
     your_mix_temp = None
     reference_temp = None
+    your_mix_path = None
+    reference_path = None
 
     try:
         # Save uploaded files to temporary locations
@@ -120,9 +122,9 @@ async def compare_tracks(
 
     finally:
         # Clean up temporary files
-        if your_mix_temp and os.path.exists(your_mix_path):
+        if your_mix_path and os.path.exists(your_mix_path):
             os.unlink(your_mix_path)
-        if reference_temp and os.path.exists(reference_path):
+        if reference_path and os.path.exists(reference_path):
             os.unlink(reference_path)
 
 
