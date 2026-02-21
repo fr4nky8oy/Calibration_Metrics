@@ -3,12 +3,23 @@ A/B This - Reference Mix Comparison API
 FastAPI application entry point
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from .core.config import settings
 from .api import routes
+
+
+# Middleware to prevent CDN caching
+class NoCacheMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
 
 
 # Create FastAPI app
@@ -19,6 +30,9 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+# Add no-cache middleware to prevent CDN caching issues
+app.add_middleware(NoCacheMiddleware)
 
 # Configure CORS - hardcoded to avoid environment variable issues
 cors_origins = [
